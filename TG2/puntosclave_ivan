@@ -1,45 +1,70 @@
-SITUACION 1: LINUX - Icinga
+SITUACIÓN 1: LINUX - Icinga
 +++++++++++++++++++++++++++
 
 * Servidor: Debian
-* Infraestructura: Linux/GNU
+* Monitorización mediante SSH (usuario Icinga)
 
-Servicios en Linux (Mediante SSH):
-* General:
-** Host levantado
-** RAM
-** Espacio en discos
-** Carga
-** Bandwidth I/O
-* Varnish (script - Github)
-* MySQL (check_tcp)
-* Apache2 (check_http)
-* SSH funcionando (check_tcp)
+Infraestructura:
+* El objetivo es tener un almacenamiento distribuido (Ej. Hadoop)
+* Consta de 13 servidores:
+** 1 Monitorización
+** 2 Frontales: reciben todas las peticiones de injesta.
+** 2 Name Nodes: guardan todos los metadatos de los data nodes.
+** 8 Data Nodes: guardan y procesan toda la información.
 
-Puntos a explicar:
-* Nº de servidores
-* Acceso a los clientes ¿NRPE o SSH?
-* Dependecias de servicios (parent - child)
-* ¿Se puede monitorizar todo? Explicación de la versatilidad de Icinga (BASH, Python, Perl)
-* Envío de mensajes -> Telegram y Correo
+Monitorización en todos los servidores:
+* Check TCP a SSH, puerto 22.
+* Check RAM.
+* Check SWAP.
+* Check Carga.
+* Check Procesos.
+* Check Espacio Libre en discos.
 
-****************************************************************************************
+Monitorización en los frontales:
+* Check TCP a Apache2, puerto 8080.
+* Check a Varnish, puerto 80.
+* Check TCP a Agente de Flume, puerto 54321.
 
-SITUACION 2: WINDOWS - PandoraFMS
+Monitorización en los name nodes:
+* Check HDFS (File system)
+
+Monitorización en los data nodes 2 y 4:
+* Check TCP a Agente de Flume, puerto 54321.
+
+[IMAGEN]
+
+En esta situación Icinga sería clave en cuanto a sistema de monitorización, tiene suficiente versatilidad para crear tus propias alarmas en un caso tan concreto como el que se presenta, ya que hablamos de tecnologías muy exclusivas como Varnish, almacenamiento HDFS, Flume… son tecnologías que no suelen tener módulos dedicados para monitorizar. Por eso, Icinga es clave, te deja crear tus propios módulos para poder monitorizar completamente cualquier tecnología.
+
+Estamos hablando de una infraestructura que contiene un almacenamiento distribuido, como bien puede ser Hadoop, usado para Big Data.Además, no es una infraestructura trivial, consta de 12 servidores. 2 frontales que reciben toda la ingesta y pasa al servidor de Flume, estos agentes de Flume se lo mandan a los Flume de los data nodes, que posteriormente desencolan y almacenamiento de Hadoop. Los name nodes se usan para guardar todos los metadatos de los ficheros de los data nodes, por tanto la RAM debe ser elevada, ya que se guardan en memoria. Al contrario, los data nodes son el almacenamiento y procesamiento de información, basta con que tengan suficiente espacio para guardar la información.
+
+
+
+*******************************************************************************************
+
+SITUACIÓN 2: WINDOWS - PandoraFMS
 +++++++++++++++++++++++++++++++++
 
 * Servidor: Windows
-* Infraestructura: Windows
-
-Servicios en Windows (Mediante cliente de PandoraFMS):
-* General
-** RAM
-** I/O Disk
-** CPU Load
-** Windows Update Monitoring
+* Monitorización mediante cliente de Pandora FMS
 
 Puntos a explicar:
-* Nº de servidores
-* Acceso a los clientes
-* Plugins y versatilidad de PandoraFMS
-* Envío de mensajes -> Aplicaciones (Android, Chrome, iOS...), Correo
+* El objetivo es tener 2 bases de datos en HA.
+* Consta de 9 servidores:
+** 1 Monitorización
+** 4 servidores tienem MSSQL Server
+** 4 servidores tienen MySQL Server
+
+Monitorización en todos los servidores:
+* Check RAM.
+* Check Carga.
+* Check Procesos.
+* Check Espacio Libre en discos.
+* Actualizaciones Windows
+
+Monitorización de los servicios:
+* MSSQL Server
+* MySQL Server
+
+[IMAGEN]
+
+El objetivo de esta situación es formar 2 cluster de 4 servidores, 1 con MySQL y el otro con MSSQL Server. En esta situación PandoraFMS es la única de las dos tecnologías que permite instalación en Windows. Gracias a la librería de Pandora FMS podemos descargar los módulos necesarios de MySQL y MSSQL Server para poder monitorizar completamente los servicios
