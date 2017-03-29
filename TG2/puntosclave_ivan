@@ -1,0 +1,45 @@
+SITUACION 1: LINUX - Icinga
++++++++++++++++++++++++++++
+
+* Servidor: Debian
+* Infraestructura: Linux/GNU
+
+Servicios en Linux (Mediante SSH):
+* General:
+** Host levantado
+** RAM
+** Espacio en discos
+** Carga
+** Bandwidth I/O
+* Varnish (script - Github)
+* MySQL (check_tcp)
+* Apache2 (check_http)
+* SSH funcionando (check_tcp)
+
+Puntos a explicar:
+* Nº de servidores
+* Acceso a los clientes ¿NRPE o SSH?
+* Dependecias de servicios (parent - child)
+* ¿Se puede monitorizar todo? Explicación de la versatilidad de Icinga (BASH, Python, Perl)
+* Envío de mensajes -> Telegram y Correo
+
+****************************************************************************************
+
+SITUACION 2: WINDOWS - PandoraFMS
++++++++++++++++++++++++++++++++++
+
+* Servidor: Windows
+* Infraestructura: Windows
+
+Servicios en Windows (Mediante cliente de PandoraFMS):
+* General
+** RAM
+** I/O Disk
+** CPU Load
+** Windows Update Monitoring
+
+Puntos a explicar:
+* Nº de servidores
+* Acceso a los clientes
+* Plugins y versatilidad de PandoraFMS
+* Envío de mensajes -> Aplicaciones (Android, Chrome, iOS...), Correo
